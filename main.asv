@@ -1,0 +1,46 @@
+% Include the model
+model_evaluation_normalized = @(U_e, U_v, U_r) (30 + 0.12 * U_v) / (100 * pi * (1000 + 3 * U_r) * sqrt((100 + 0.45 * U_e) ^ 2 - (30 + 0.12 * U_v) ^ 2));
+
+% Hermite Polynomial Evaluation Function (assuming eval_hermite.m is in the same directory)
+% The function eval_hermite should be defined as shown previously
+
+% Number of samples for Monte Carlo simulation
+N_samples = 1000;
+polynomial_degree = 5; % Degree of the polynomial expansion
+
+% Probabilistic model parameters (means and standard deviations for U_e, U_v, U_r)
+mu = [0 0 0]; % Assuming mean zero for normalization
+sigma = [1 1 1]; % Standard deviation of 1 for all
+
+% Generate random samples from the Gaussian distributions
+U_e_samples = mu(1) + sigma(1) * randn(N_samples, 1);
+U_v_samples = mu(2) + sigma(2) * randn(N_samples, 1);
+U_r_samples = mu(3) + sigma(3) * randn(N_samples, 1);
+
+% Evaluate the model on the training data
+Y_train = model_evaluation_normalized(U_e_samples, U_v_samples, U_r_samples);
+
+% Fit the polynomial chaos expansion using least squares
+% Setup the regression matrix
+X = [];
+for d = 0:polynomial_degree
+    X = [X, eval_hermite(U_e_samples, d)];
+end
+
+% Solve for polynomial coefficients using least squares
+coefficients = X \ Y_train;
+
+% Evaluation on test data
+U_e_test = mu(1) + sigma(1) * randn(N_samples, 1);
+U_v_test = mu(2) + sigma(2) * randn(N_samples, 1);
+U_r_test = mu(3) + sigma(3) * randn(N_samples, 1);
+Y_test = model_evaluation_normalized(U_e_test, U_v_test, U_r_test);
+
+% Predict using the PCE model
+Y_pred = X * coefficients; % Note: Ensure that X matrix generation matches the test data generation
+
+% Compute error metrics, e.g., mean squared error
+MSE = mean((Y_test - Y_pred).^2);
+
+% Display the results
+fprintf('The mean squared error of the PCE model is: %.4f\n', MSE);
