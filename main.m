@@ -1,14 +1,14 @@
 %% Sampling the experimental design
 
 % Define number of training samples
-N_samples = 1000;
+N_samples = 100;
 
 % Generate the training set
 [U_e_train, U_v_train, U_r_train] = samples(N_samples, 'random');
 C_train = model_evaluation_normalized(U_e_train, U_v_train, U_r_train);
 
 %% Construction of the PCE model
-max_degree = 4;
+max_degree = 5;
 degree_range = 0:max_degree;
 % Create the surrogate surrogate_models for each degree
 surrogate_models = cell(max_degree+1, 1);
@@ -75,7 +75,7 @@ ylabel('variance')
 degree = 3;
 
 % Define number of training samples
-training_set_size = logspace(1,6);
+training_set_size = linspace(10,150);
 
 surrogate_models_vs_train_size = cell(length(training_set_size), 1);
 for i = 1:length(training_set_size)
@@ -95,7 +95,7 @@ for i = 1:length(training_set_size)
     mean_vs_training_set(i) = surrogate_models{i}.coefficients(1);
 end
 
-semilogx(training_set_size, mean_vs_training_set)
+plot(training_set_size, mean_vs_training_set)
 xlabel('experimental design')
 ylabel('mean')
 
@@ -106,7 +106,7 @@ for i = 1:length(training_set_size)
     var_vs_training_set(i) = sum(surrogate_models{i}.coefficients(2:end).^2);
 end
 
-semilogx(training_set_size, var_vs_training_set)
+plot(training_set_size, var_vs_training_set)
 xlabel('experimental design')
 ylabel('variance')
 
