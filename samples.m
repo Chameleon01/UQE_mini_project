@@ -18,7 +18,7 @@ function [U_e, U_v, U_r] = samples(N_samples, strategy)
     switch strategy
         case 'lhs'
             % Latin Hypercube Sampling
-            % samples = lhsdesign(N_samples, 3);
+            % samples = norminv(lhsdesign(N_samples, 3));
             samples = 1;
         case 'random'
             % Random sampling
