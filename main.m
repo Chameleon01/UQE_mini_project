@@ -21,7 +21,7 @@ end
 %% Numerical Experiment
 
 % Generate the test set
-N_samples_test = 1e4;
+N_samples_test = 1e6;
 [U_e_test, U_v_test, U_r_test] = samples(N_samples_test, 'random');
 C_test = model_evaluation_normalized(U_e_test, U_v_test, U_r_test);
 
@@ -36,8 +36,8 @@ end
 
 semilogy(degree_range, errors, 'o-','LineWidth',1.5)
 grid on
-xlabel('Polynomial degree','FontSize',14)
-ylabel('Empirical error','FontSize',14)
+xlabel('Polynomial degree','FontSize',20)
+ylabel('Empirical error','FontSize',20)
 
 % Evaluate the models on the test data
 loo_errors = zeros(max_degree+1, 1);
@@ -47,7 +47,7 @@ end
 
 hold on;
 semilogy(degree_range, loo_errors, 'o-','LineWidth',1.5)
-legend('Relative mean squared error', 'Leave one out error','FontSize',14)
+legend('Relative mean squared error', 'Leave one out error','FontSize',20)
 hold off;
 
 %% Moments comparison
@@ -59,8 +59,8 @@ end
 figure
 plot(degree_range, mean_vs_degree,'LineWidth',1.5)
 grid on
-xlabel('degree','FontSize',14)
-ylabel('mean','FontSize',14)
+xlabel('degree','FontSize',20)
+ylabel('mean','FontSize',20)
 
 var_test = var(C_test)
 var_vs_degree = zeros(length(degree_range), 1);
@@ -73,8 +73,9 @@ hold on
 plot(degree_range, var_test,'--' ,'LineWidth',1.5)
 plot(degree_range, var_vs_degree,'LineWidth',1.5)
 grid on
-xlabel('degree','FontSize',14)
-ylabel('variance','FontSize',14)
+fontsize(gca, 14, 'points')
+xlabel('degree','FontSize',20)
+ylabel('variance','FontSize',20)
 hold off
 %% Variation of training set size
 
@@ -110,9 +111,10 @@ end
 figure
 semilogy(training_set_size, mean_vs_training_set,'-o','LineWidth',1.5)
 grid on
-xlabel('size of experimental design','FontSize',14)
-ylabel('mean','FontSize',14)
-legend(['PCE degree ' int2str(degree)], ['PCE degree ' int2str(degree_2)],'FontSize',14)
+fontsize(gca, 14, 'points')
+xlabel('size of experimental design','FontSize',20)
+ylabel('mean [μF]','FontSize',20)
+legend(['PCE degree ' int2str(degree)], ['PCE degree ' int2str(degree_2)],'FontSize',20)
 
 figure
 
@@ -124,6 +126,7 @@ end
 
 semilogy(training_set_size, var_vs_training_set,'-o','LineWidth',1.5)
 grid on
-xlabel('size of experimental design','FontSize',14)
-ylabel('variance','FontSize',14)
-legend(['PCE degree ' int2str(degree)], ['PCE degree ' int2str(degree_2)],'FontSize',14)
+fontsize(gca, 14, 'points')
+xlabel('size of experimental design','FontSize',20)
+ylabel('variance [pF²]','FontSize',20)
+legend(['PCE degree ' int2str(degree)], ['PCE degree ' int2str(degree_2)],'FontSize',20)
