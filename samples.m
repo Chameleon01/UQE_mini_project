@@ -22,7 +22,7 @@ function [U_e, U_v, U_r] = samples(N_samples, strategy)
             samples = 1;
         case 'random'
             % Random sampling
-            samples = rand(N_samples, 3);
+            samples = randn(N_samples, 3);
         otherwise
             error('Invalid sampling strategy. Please choose either "lhs" or "random".')
     end
